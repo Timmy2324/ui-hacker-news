@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {getSelectedNews} from "../../api/hackerNewsApi";
+import {NavLink, useRouteMatch} from 'react-router-dom';
 
 type NewsPropsType = {
     newsId: string,
 }
 
-type NewsType = {
+export type NewsType = {
     by: string,
     descendants: number,
     id: number,
@@ -20,17 +21,19 @@ type NewsType = {
 
 export const News = ({newsId}: NewsPropsType) => {
 
+    const {url} = useRouteMatch();
+
+
     const [news, setNews] = useState<NewsType>();
 
     useEffect(() => {
         getSelectedNews(newsId).then(data => data.url && setNews(data));
     },[]);
-
     return (
         <>
             {news && news.url ?
             <div>
-                <a href={news.url}>{news.title}</a> score {news.score}
+                <NavLink to={`${url}/${news.id}`}>{news.title}</NavLink> score {news.score}
                 <p>by: {news.by}</p>
                 <p>date: {new Date(news.time * 1000).toUTCString()}</p>
             </div> : ''
