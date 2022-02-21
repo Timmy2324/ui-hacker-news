@@ -10,10 +10,10 @@ function App() {
     return (
         <div className="App">
             <Switch>
-                <Route path='/news/1'>
+                <Route path='/news/:newsId'>
                     <SelectedNews/>
                 </Route>
-                <Route exact path='/news'>
+                <Route path='/news'>
                     <NewsContainer/>
                 </Route>
                 <Route exact path='/'>

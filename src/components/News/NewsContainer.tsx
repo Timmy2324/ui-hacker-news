@@ -12,7 +12,8 @@ export const NewsContainer = () => {
 
     return (
         <>
-            {allNews.map(news => <News key={news} newsId={news}/>)}
+            <button>update</button>
+            {allNews.map(newsId => <News key={newsId} newsId={newsId}/>)}
         </>
 
     );
