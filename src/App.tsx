@@ -3,10 +3,9 @@ import './App.css';
 import {Redirect, Route, Switch} from "react-router-dom";
 import {SelectedNews} from "./components/SelectedNews/SelectedNews";
 import {ErrorPage} from "./components/ErrorPage/ErrorPage";
-import {NewsContainer} from "./components/News/NewsContainer";
+import {AllNews} from "./components/News/AllNews";
 
 function App() {
-
     return (
         <div className="App">
             <Switch>
@@ -14,7 +13,7 @@ function App() {
                     <SelectedNews/>
                 </Route>
                 <Route path='/news'>
-                    <NewsContainer/>
+                    <AllNews/>
                 </Route>
                 <Route exact path='/'>
                     <Redirect to='/news'/>

@@ -5,9 +5,9 @@ export const newsUrl = `${baseUrl}newstories.json`;
 export const selectedNewsUrl = `${baseUrl}item/`;
 
 export const getAllNews = async () => {
-    return await axios.get(newsUrl).then(({data}) => data);
+    return await axios.get(newsUrl);
 }
 
 export const getSelectedNews = async (newsId: string) => {
-    return await axios.get(`${selectedNewsUrl + newsId}.json`).then(({data}) => data);
+    return await axios.get(`${selectedNewsUrl + newsId}.json`);
 }
