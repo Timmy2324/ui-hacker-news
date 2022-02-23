@@ -11,3 +11,7 @@ export const getAllNews = async () => {
 export const getSelectedNews = async (newsId: string) => {
     return await axios.get(`${selectedNewsUrl + newsId}.json`);
 }
+
+export const getComment = async (commentId: string) => {
+    return await axios.get(`${selectedNewsUrl + commentId}.json`);
+}
