@@ -16,9 +16,9 @@ type MapDispatchPropsType = {
     updateNews: (isUpdate: boolean) => void,
 }
 
-type AllNewsContainerComponentPropsType = MapStatePropsType & MapDispatchPropsType;
+type AllNewsComponentPropsType = MapStatePropsType & MapDispatchPropsType;
 
-const AllNewsComponent: React.FC<AllNewsContainerComponentPropsType> = (props) => {
+const AllNewsComponent: React.FC<AllNewsComponentPropsType> = (props) => {
 
     const [isChange, setIsChange] = useState(false);
 
@@ -39,7 +39,7 @@ const AllNewsComponent: React.FC<AllNewsContainerComponentPropsType> = (props) =
                 setIsChange(!isChange)
             }}>update
             </button>
-            {props.allNewsId.map(newsId => <News id={newsId}/>)}
+            {props.allNewsId.map(newsId => <News key={newsId} id={newsId}/>)}
         </>
 
     );
