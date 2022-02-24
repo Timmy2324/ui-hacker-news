@@ -37,7 +37,7 @@ const AllNewsComponent: React.FC<AllNewsComponentPropsType> = (props) => {
         <>
             <Grid container spacing={2}>
                 <Grid item xs={12}>
-                    <Button color="secondary" variant="outlined" disabled={props.isUpdateNews} onClick={() => {
+                    <Button variant="outlined" disabled={props.isUpdateNews} onClick={() => {
                         props.updateNews(true);
                         setIsChange(!isChange)
                     }}>update

@@ -1,0 +1,22 @@
+.linkBack {
+    text-decoration: none;
+    color: inherit;
+}
+
+.title {
+    margin: 0;
+    font-size: 30px;
+    word-wrap: break-word;
+}
+
+.text {
+    margin: 10px 0;
+}
+
+.text:last-child {
+    margin-bottom: 0;
+}
+
+.linkToNews {
+    text-decoration: none;
+}
