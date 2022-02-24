@@ -20,3 +20,9 @@
 .linkToNews {
     text-decoration: none;
 }
+
+.preloaderWrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}

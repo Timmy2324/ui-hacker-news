@@ -3,9 +3,10 @@ import {getAllNews} from "../../api/hackerNewsApi";
 import {AppStoreType} from "../../store/store";
 import {Dispatch} from "redux";
 import {connect} from "react-redux";
-import {setAllNewsId, updateNews} from "../../reducers/newsReducer";
-import {News} from "./News";
-import {Button, Grid} from "@mui/material";
+import {setAllNewsId, updateNews} from "../../reducers/allNewsReducer";
+import {Button, CircularProgress, Grid} from "@mui/material";
+import {News} from "./News/News";
+import style from "./AllNews.module.css";
 
 type MapStatePropsType = {
     allNewsId: Array<number>,
@@ -20,22 +21,29 @@ type MapDispatchPropsType = {
 type AllNewsComponentPropsType = MapStatePropsType & MapDispatchPropsType;
 
 const AllNewsComponent: React.FC<AllNewsComponentPropsType> = (props) => {
-
     const [isChange, setIsChange] = useState(false);
 
     useEffect(() => {
+        document.title = 'Hacker AllNews';
+    });
+
+    useEffect(() => {
+        console.log('kek')
         props.updateNews(true);
         getAllNews().then(response => {
             props.setAllNewsId([]);
-            props.setAllNewsId(response.data.splice(0, 100));
+            props.setAllNewsId(response.data.slice(0, 100));
             props.updateNews(false);
         });
-
+        return () => props.setAllNewsId([]);
     }, [isChange]);
 
     return (
         <>
             <Grid container spacing={2}>
+                <Grid item xs={12}>
+                    <h1 className={style.title}>Hacker News</h1>
+                </Grid>
                 <Grid item xs={12}>
                     <Button variant="outlined" disabled={props.isUpdateNews} onClick={() => {
                         props.updateNews(true);
@@ -43,9 +51,8 @@ const AllNewsComponent: React.FC<AllNewsComponentPropsType> = (props) => {
                     }}>update
                     </Button>
                 </Grid>
-
-
-                {props.allNewsId.map(newsId => <News key={newsId} id={newsId}/>)}
+                {props.allNewsId.length === 0 && <div className={style.preloaderWrapper}><CircularProgress /></div>}
+                {props.allNewsId.map(newsId => <News key={newsId} newsId={newsId}/>)}
             </Grid>
 
         </>

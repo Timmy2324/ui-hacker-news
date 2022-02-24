@@ -1,14 +1,14 @@
-type NewsPageType = {
+type AllNewsPageType = {
     allNewsId: Array<number>,
     isUpdateNews: boolean,
 }
 
-const initialState: NewsPageType = {
+const initialState: AllNewsPageType = {
     allNewsId: [],
     isUpdateNews: false,
 }
 
-export const NewsReducer = (state: NewsPageType = initialState, action: GenerationType) => {
+export const AllNewsReducer = (state: AllNewsPageType = initialState, action: GenerationType) => {
     switch (action.type) {
         case 'SET-ALL-NEWS-ID': {
             return {...state, allNewsId: [...action.payload.allNewsId]};

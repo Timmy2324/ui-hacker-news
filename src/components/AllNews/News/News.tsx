@@ -1,26 +1,26 @@
 import React, {useEffect, useState} from 'react';
-import {getSelectedNews} from "../../api/hackerNewsApi";
+import {getSelectedNews} from "../../../api/hackerNewsApi";
 import {NavLink, useRouteMatch} from 'react-router-dom';
-import {ItemType} from "../../types/ItemType";
+import {ItemType} from "../../../types/ItemType";
 import {Card, CardContent, Grid} from "@mui/material";
 import style from './News.module.css';
 
 type NewsPropsType = {
-    id: number,
+    newsId: number,
 }
 
 export const News: React.FC<NewsPropsType> = (props: NewsPropsType) => {
 
     const {url} = useRouteMatch();
 
-    const [news, setNews] = useState<ItemType>();
+    const [news, setNews] = useState<ItemType | null>();
 
     useEffect(() => {
-        getSelectedNews(String(props.id)).then(response => {
+        getSelectedNews(String(props.newsId)).then(response => {
             setNews(response.data);
         });
+        return () => setNews(null);
     }, []);
-
 
     return (
         <Grid item xs={12}>

@@ -7,7 +7,7 @@ import {Dispatch} from "redux";
 import {connect} from "react-redux";
 import {setNews} from "../../reducers/selectedNews";
 import {Comments} from "./Comments/Comments";
-import {Button, Card, CardContent, Grid, Link} from "@mui/material";
+import {Button, Card, CardContent, CircularProgress, Grid, Link} from "@mui/material";
 import style from './SelectedNews.module.css'
 
 type MapStatePropsType = {
@@ -15,7 +15,7 @@ type MapStatePropsType = {
 }
 
 type MapDispatchPropsType = {
-    setNews: (news: ItemType) => void,
+    setNews: (news: ItemType | null) => void,
 }
 
 type SelectedNewsComponentPropsType = MapStatePropsType & MapDispatchPropsType;
@@ -26,8 +26,19 @@ export const SelectedNewsComponent: React.FC<SelectedNewsComponentPropsType> = (
     useEffect(() => {
         getSelectedNews(params.newsId).then(response => {
             props.setNews(response.data);
+
         });
+        return () => {
+            props.setNews(null);
+        }
     }, []);
+
+    useEffect(() => {
+        if (props.news?.title) {
+            document.title = props.news?.title;
+            console.log(props.news.title)
+        }
+    })
 
     return (
         <Grid container spacing={2}>
@@ -36,7 +47,7 @@ export const SelectedNewsComponent: React.FC<SelectedNewsComponentPropsType> = (
                     news</NavLink></Button>
             </Grid>
             {props.news
-                && <Grid item xs={12}>
+                ? <Grid item xs={12}>
                     <Card variant="outlined">
                         <CardContent>
                             <h3 className={style.title}>{props.news.title}</h3>
@@ -48,6 +59,7 @@ export const SelectedNewsComponent: React.FC<SelectedNewsComponentPropsType> = (
                         </CardContent>
                     </Card>
                 </Grid>
+                : <div className={style.preloaderWrapper}><CircularProgress /></div>
             }
         </Grid>
     );
