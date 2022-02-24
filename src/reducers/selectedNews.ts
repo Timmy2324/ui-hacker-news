@@ -21,7 +21,7 @@ export const SelectedNewsReducer = (state: SelectedNewsPage = initialState, acti
 type GenerationType = SetNewsType;
 
 type SetNewsType = ReturnType<typeof setNews>
-export const setNews = (news: ItemType) => {
+export const setNews = (news: ItemType | null) => {
     return {
         type: 'SET-NEWS',
         payload: {
