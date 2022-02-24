@@ -1,0 +1,30 @@
+.link {
+    text-decoration: none;
+    color: #262626;
+    display: inline-block;
+    width: 100%;
+    transition: 0.3s;
+}
+
+.link:hover {
+    background-color: #f6f6f6;
+}
+
+.title {
+    margin: 0;
+    font-size: 30px;
+    word-wrap: break-word;
+}
+
+.text {
+    margin: 10px 0;
+}
+
+.text:last-child {
+    margin-bottom: 0;
+}
+
+.score {
+    margin: 0;
+    min-width: 60px;
+}
