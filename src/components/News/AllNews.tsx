@@ -5,6 +5,7 @@ import {Dispatch} from "redux";
 import {connect} from "react-redux";
 import {setAllNewsId, updateNews} from "../../reducers/newsReducer";
 import {News} from "./News";
+import {Button, Grid} from "@mui/material";
 
 type MapStatePropsType = {
     allNewsId: Array<number>,
@@ -34,12 +35,19 @@ const AllNewsComponent: React.FC<AllNewsComponentPropsType> = (props) => {
 
     return (
         <>
-            <button disabled={props.isUpdateNews} onClick={() => {
-                props.updateNews(true);
-                setIsChange(!isChange)
-            }}>update
-            </button>
-            {props.allNewsId.map(newsId => <News key={newsId} id={newsId}/>)}
+            <Grid container spacing={2}>
+                <Grid item xs={12}>
+                    <Button color="secondary" variant="outlined" disabled={props.isUpdateNews} onClick={() => {
+                        props.updateNews(true);
+                        setIsChange(!isChange)
+                    }}>update
+                    </Button>
+                </Grid>
+
+
+                {props.allNewsId.map(newsId => <News key={newsId} id={newsId}/>)}
+            </Grid>
+
         </>
 
     );
