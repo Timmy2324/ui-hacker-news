@@ -36,7 +36,6 @@ export const SelectedNewsComponent: React.FC<SelectedNewsComponentPropsType> = (
     useEffect(() => {
         if (props.news?.title) {
             document.title = props.news?.title;
-            console.log(props.news.title)
         }
     })
 

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {memo, useEffect, useState} from 'react';
 import {getAllNews} from "../../api/hackerNewsApi";
 import {AppStoreType} from "../../store/store";
 import {Dispatch} from "redux";
@@ -20,7 +20,7 @@ type MapDispatchPropsType = {
 
 type AllNewsComponentPropsType = MapStatePropsType & MapDispatchPropsType;
 
-const AllNewsComponent: React.FC<AllNewsComponentPropsType> = (props) => {
+const AllNewsComponent: React.FC<AllNewsComponentPropsType> = memo(function AllNewsComponent(props: AllNewsComponentPropsType) {
     const [isChange, setIsChange] = useState(false);
 
     useEffect(() => {
@@ -28,15 +28,20 @@ const AllNewsComponent: React.FC<AllNewsComponentPropsType> = (props) => {
     });
 
     useEffect(() => {
-        console.log('kek')
         props.updateNews(true);
         getAllNews().then(response => {
-            props.setAllNewsId([]);
             props.setAllNewsId(response.data.slice(0, 100));
             props.updateNews(false);
         });
         return () => props.setAllNewsId([]);
     }, [isChange]);
+
+    useEffect(() => {
+        setTimeout(() => {
+            setIsChange(!isChange)
+        }, 60000);
+    }, [isChange]);
+
 
     return (
         <>
@@ -58,7 +63,7 @@ const AllNewsComponent: React.FC<AllNewsComponentPropsType> = (props) => {
         </>
 
     );
-};
+});
 
 const mapStateToProps = (state: AppStoreType): MapStatePropsType => {
     return {

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {memo, useEffect, useState} from 'react';
 import {getSelectedNews} from "../../../api/hackerNewsApi";
 import {NavLink, useRouteMatch} from 'react-router-dom';
 import {ItemType} from "../../../types/ItemType";
@@ -9,8 +9,7 @@ type NewsPropsType = {
     newsId: number,
 }
 
-export const News: React.FC<NewsPropsType> = (props: NewsPropsType) => {
-
+export const News: React.FC<NewsPropsType> = memo(function News(props: NewsPropsType) {
     const {url} = useRouteMatch();
 
     const [news, setNews] = useState<ItemType | null>();
@@ -49,4 +48,4 @@ export const News: React.FC<NewsPropsType> = (props: NewsPropsType) => {
         </Grid>
 
     );
-};
+});
