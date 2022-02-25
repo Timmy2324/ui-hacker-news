@@ -33,12 +33,12 @@ export const News: React.FC<NewsPropsType> = memo(function News(props: NewsProps
             {error && <span className={style.error}>Error: {error}</span>}
             {news
                 && <Card variant="outlined">
-                    <NavLink className={style.link} to={`${url}/${news?.id}`}>
+                    <NavLink className={style.link} to={`${url}/${news.id}`}>
                         <CardContent>
                             <div>
                                 <Grid container>
                                     <Grid item xs={9} sm={10} md={11}>
-                                        <h2 className={style.title}>{news.title}</h2>
+                                        <h2 className={style.title} dangerouslySetInnerHTML={{__html: news.title}}/>
                                     </Grid>
                                     <Grid item xs={3} sm={2} md={1}>
                                         <p className={style.score}>score: {news.score}</p>
