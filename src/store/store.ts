@@ -4,7 +4,7 @@ import {SelectedNewsReducer} from "../reducers/selectedNews";
 
 
 const rootReducer = combineReducers({
-    NewsReducer: AllNewsReducer,
+    AllNewsReducer,
     SelectedNewsReducer,
 });
 

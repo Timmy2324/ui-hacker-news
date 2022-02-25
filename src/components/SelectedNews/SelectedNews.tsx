@@ -5,17 +5,21 @@ import {ItemType} from "../../types/ItemType";
 import {AppStoreType} from "../../store/store";
 import {Dispatch} from "redux";
 import {connect} from "react-redux";
-import {setNews} from "../../reducers/selectedNews";
+import {setError, setNews, updateLoading} from "../../reducers/selectedNews";
 import {Comments} from "./Comments/Comments";
 import {Button, Card, CardContent, CircularProgress, Grid, Link} from "@mui/material";
 import style from './SelectedNews.module.css'
 
 type MapStatePropsType = {
     news: ItemType | null,
+    error: string,
+    isLoading: boolean,
 }
 
 type MapDispatchPropsType = {
     setNews: (news: ItemType | null) => void,
+    setError: (error: string) => void,
+    updateLoading: (isLoading: boolean) => void,
 }
 
 type SelectedNewsComponentPropsType = MapStatePropsType & MapDispatchPropsType;
@@ -24,12 +28,19 @@ export const SelectedNewsComponent: React.FC<SelectedNewsComponentPropsType> = (
     const params = useParams<{ newsId: string }>();
 
     useEffect(() => {
-        getSelectedNews(params.newsId).then(response => {
-            props.setNews(response.data);
-
+        props.updateLoading(true);
+        getSelectedNews(params.newsId)
+            .then(response => {
+                props.setError('');
+                props.setNews(response.data);
+                props.updateLoading(false);
+            }).catch(error => {
+                props.setError(error.response.data.error);
+                props.updateLoading(false);
         });
         return () => {
             props.setNews(null);
+            props.setError('');
         }
     }, []);
 
@@ -37,7 +48,7 @@ export const SelectedNewsComponent: React.FC<SelectedNewsComponentPropsType> = (
         if (props.news?.title) {
             document.title = props.news?.title;
         }
-    })
+    }, [props.news?.title])
 
     return (
         <Grid container spacing={2}>
@@ -45,8 +56,10 @@ export const SelectedNewsComponent: React.FC<SelectedNewsComponentPropsType> = (
                 <Button variant="outlined"><NavLink className={style.linkBack} to={`/news`}>back to all
                     news</NavLink></Button>
             </Grid>
+            {props.error && <Grid item xs={12}><span className={style.error}>Error: {props.error}</span></Grid>}
+            {props.isLoading && <div className={style.preloaderWrapper}><CircularProgress /></div>}
             {props.news
-                ? <Grid item xs={12}>
+                && <Grid item xs={12}>
                     <Card variant="outlined">
                         <CardContent>
                             <h3 className={style.title}>{props.news.title}</h3>
@@ -58,7 +71,6 @@ export const SelectedNewsComponent: React.FC<SelectedNewsComponentPropsType> = (
                         </CardContent>
                     </Card>
                 </Grid>
-                : <div className={style.preloaderWrapper}><CircularProgress /></div>
             }
         </Grid>
     );
@@ -67,12 +79,16 @@ export const SelectedNewsComponent: React.FC<SelectedNewsComponentPropsType> = (
 const mapStateToProps = (state: AppStoreType): MapStatePropsType => {
     return {
         news: state.SelectedNewsReducer.news,
+        error: state.SelectedNewsReducer.error,
+        isLoading: state.SelectedNewsReducer.isLoading,
     }
 }
 
 const mapDispatchToProps = (dispatch: Dispatch): MapDispatchPropsType => {
     return {
         setNews: (news) => dispatch(setNews(news)),
+        setError: (error) => dispatch(setError(error)),
+        updateLoading: (isLoading) => dispatch(updateLoading(isLoading)),
     }
 }
 

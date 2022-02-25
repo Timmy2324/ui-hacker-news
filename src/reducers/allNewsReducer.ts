@@ -1,11 +1,13 @@
 type AllNewsPageType = {
     allNewsId: Array<number>,
     isUpdateNews: boolean,
+    error: string,
 }
 
 const initialState: AllNewsPageType = {
     allNewsId: [],
     isUpdateNews: false,
+    error: '',
 }
 
 export const AllNewsReducer = (state: AllNewsPageType = initialState, action: GenerationType) => {
@@ -16,12 +18,15 @@ export const AllNewsReducer = (state: AllNewsPageType = initialState, action: Ge
         case 'UPDATE-NEWS': {
             return {...state, isUpdateNews: action.payload.isUpdate};
         }
+        case 'SET-ERROR': {
+            return {...state, error: action.payload.error};
+        }
         default:
             return state;
     }
 }
 
-type GenerationType = SetAllNewsIdType |  UpdateNewsType;
+type GenerationType = SetAllNewsIdType |  UpdateNewsType | SetErrorType;
 
 type SetAllNewsIdType = ReturnType<typeof setAllNewsId>;
 export const setAllNewsId = (allNewsId: Array<number>) => {
@@ -39,6 +44,16 @@ export const updateNews = (isUpdate: boolean) => {
         type: 'UPDATE-NEWS',
         payload: {
             isUpdate,
+        }
+    } as const
+}
+
+type SetErrorType = ReturnType<typeof setError>;
+export const setError = (error: string) => {
+    return {
+        type: 'SET-ERROR',
+        payload: {
+            error,
         }
     } as const
 }

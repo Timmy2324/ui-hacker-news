@@ -13,18 +13,26 @@ export const News: React.FC<NewsPropsType> = memo(function News(props: NewsProps
     const {url} = useRouteMatch();
 
     const [news, setNews] = useState<ItemType | null>();
+    const [error, setError] = useState('');
 
     useEffect(() => {
         getSelectedNews(String(props.newsId)).then(response => {
+            setError('');
             setNews(response.data);
+        }).catch(error => {
+            setError(error.response.data.error);
         });
-        return () => setNews(null);
+        return () => {
+            setNews(null);
+            setError('');
+        };
     }, []);
 
     return (
         <Grid item xs={12}>
-            {news ?
-                <Card variant="outlined">
+            {error && <span className={style.error}>Error: {error}</span>}
+            {news
+                && <Card variant="outlined">
                     <NavLink className={style.link} to={`${url}/${news?.id}`}>
                         <CardContent>
                             <div>
@@ -38,13 +46,17 @@ export const News: React.FC<NewsPropsType> = memo(function News(props: NewsProps
                                 </Grid>
 
                                 <p className={style.text}>By: {news.by}</p>
-                                {news.time && <p className={style.text}>Publication
-                                    date: {new Date(news.time * 1000).toLocaleDateString()} {new Date(news.time * 1000).toLocaleTimeString()}</p>}
+                                {news.time
+                                    && <p className={style.text}>
+                                        Publication date: {new Date(news.time * 1000).toLocaleTimeString() + ' ' +
+                                        new Date(news.time * 1000).toLocaleDateString()}
+                                    </p>
+                                }
                             </div>
                         </CardContent>
                     </NavLink>
                 </Card>
-                : ''}
+            }
         </Grid>
 
     );
