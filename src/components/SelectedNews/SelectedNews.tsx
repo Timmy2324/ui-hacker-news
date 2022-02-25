@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {memo, useEffect} from 'react';
 import {getSelectedNews} from "../../api/hackerNewsApi";
 import {NavLink, useParams} from "react-router-dom";
 import {ItemType} from "../../types/ItemType";
@@ -24,7 +24,8 @@ type MapDispatchPropsType = {
 
 type SelectedNewsComponentPropsType = MapStatePropsType & MapDispatchPropsType;
 
-export const SelectedNewsComponent: React.FC<SelectedNewsComponentPropsType> = (props) => {
+export const SelectedNewsComponent: React.FC<SelectedNewsComponentPropsType> = memo(function SelectedNewsComponent (props) {
+
     const params = useParams<{ newsId: string }>();
 
     useEffect(() => {
@@ -53,7 +54,7 @@ export const SelectedNewsComponent: React.FC<SelectedNewsComponentPropsType> = (
     return (
         <Grid container spacing={2}>
             <Grid item xs={12}>
-                <Button variant="outlined"><NavLink className={style.linkBack} to={`/news`}>back to all
+                <Button variant="outlined"><NavLink className={style.linkBack} to={`/news`} >back to all
                     news</NavLink></Button>
             </Grid>
             {props.error && <Grid item xs={12}><span className={style.error}>Error: {props.error}</span></Grid>}
@@ -62,10 +63,10 @@ export const SelectedNewsComponent: React.FC<SelectedNewsComponentPropsType> = (
                 && <Grid item xs={12}>
                     <Card variant="outlined">
                         <CardContent>
-                            <h3 className={style.title}>{props.news.title}</h3>
-                            {props.news.url && <p className={style.text}><Link underline="hover" href={props.news.url}>go to news</Link></p>}
+                            <h3 className={style.title} dangerouslySetInnerHTML={{__html: props.news.title}}/>
+                            <p className={style.text}><Link style={{cursor: 'pointer'}} underline="hover" target={'_blank'} href={props.news.url}>go to news</Link></p>
                             <p className={style.text}>By: {props.news.by}</p>
-                            {props.news.time && <p className={style.text}>Publication date: {new Date(props.news.time * 1000).toLocaleDateString()} {new Date(props.news.time * 1000).toLocaleTimeString()}</p>}
+                            <p className={style.text}>Publication date: {new Date(props.news.time * 1000).toLocaleDateString()} {new Date(props.news.time * 1000).toLocaleTimeString()}</p>
                             <p className={style.text}>comments count: {props.news.descendants}</p>
                             {props.news.kids && props.news.kids.map(id => <Comments key={id} id={id}/>)}
                         </CardContent>
@@ -74,7 +75,7 @@ export const SelectedNewsComponent: React.FC<SelectedNewsComponentPropsType> = (
             }
         </Grid>
     );
-};
+});
 
 const mapStateToProps = (state: AppStoreType): MapStatePropsType => {
     return {

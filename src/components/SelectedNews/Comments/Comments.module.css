@@ -1,0 +1,13 @@
+.title {
+    border-bottom: 1px solid grey;
+    display: inline-block;
+    margin: 0;
+}
+
+.text {
+
+}
+
+.error {
+    color: red;
+}
