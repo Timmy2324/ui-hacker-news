@@ -3,7 +3,7 @@ import {getAllNews} from "../../api/hackerNewsApi";
 import {AppStoreType} from "../../store/store";
 import {Dispatch} from "redux";
 import {connect} from "react-redux";
-import {setAllNewsId, updateNews} from "../../reducers/allNewsReducer";
+import {setAllNewsId, setError, updateNews} from "../../reducers/allNewsReducer";
 import {Button, CircularProgress, Grid} from "@mui/material";
 import {News} from "./News/News";
 import style from "./AllNews.module.css";
@@ -11,11 +11,13 @@ import style from "./AllNews.module.css";
 type MapStatePropsType = {
     allNewsId: Array<number>,
     isUpdateNews: boolean,
+    error: string,
 }
 
 type MapDispatchPropsType = {
     setAllNewsId: (allNewsId: Array<number>) => void,
     updateNews: (isUpdate: boolean) => void,
+    setError: (error: string) => void,
 }
 
 type AllNewsComponentPropsType = MapStatePropsType & MapDispatchPropsType;
@@ -29,17 +31,23 @@ const AllNewsComponent: React.FC<AllNewsComponentPropsType> = memo(function AllN
 
     useEffect(() => {
         props.updateNews(true);
-        getAllNews().then(response => {
-            props.setAllNewsId(response.data.slice(0, 100));
-            props.updateNews(false);
-        });
+        getAllNews()
+            .then(response => {
+                props.setError('');
+                props.setAllNewsId(response.data.slice(0, 100));
+                props.updateNews(false);
+            }).catch(error => {
+                props.setError(error.response.data.error);
+                props.updateNews(false);
+            });
         return () => props.setAllNewsId([]);
     }, [isChange]);
 
     useEffect(() => {
-        setTimeout(() => {
+        let timeout = setTimeout(() => {
             setIsChange(!isChange)
         }, 60000);
+        return () => clearTimeout(timeout);
     }, [isChange]);
 
 
@@ -56,7 +64,8 @@ const AllNewsComponent: React.FC<AllNewsComponentPropsType> = memo(function AllN
                     }}>update
                     </Button>
                 </Grid>
-                {props.allNewsId.length === 0 && <div className={style.preloaderWrapper}><CircularProgress /></div>}
+                {props.error && <Grid item xs={12}><span className={style.error}>Error: {props.error}</span></Grid>}
+                {props.isUpdateNews && <div className={style.preloaderWrapper}><CircularProgress /></div>}
                 {props.allNewsId.map(newsId => <News key={newsId} newsId={newsId}/>)}
             </Grid>
 
@@ -67,8 +76,9 @@ const AllNewsComponent: React.FC<AllNewsComponentPropsType> = memo(function AllN
 
 const mapStateToProps = (state: AppStoreType): MapStatePropsType => {
     return {
-        allNewsId: state.NewsReducer.allNewsId,
-        isUpdateNews: state.NewsReducer.isUpdateNews,
+        allNewsId: state.AllNewsReducer.allNewsId,
+        isUpdateNews: state.AllNewsReducer.isUpdateNews,
+        error: state.AllNewsReducer.error,
     }
 }
 
@@ -76,6 +86,7 @@ const mapDispatchToProps = (dispatch: Dispatch): MapDispatchPropsType => {
     return {
         setAllNewsId: (allNewsId) => dispatch(setAllNewsId(allNewsId)),
         updateNews: (isUpdate) => dispatch(updateNews(isUpdate)),
+        setError: (error) => dispatch(setError(error)),
     }
 }
 
