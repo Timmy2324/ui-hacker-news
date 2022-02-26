@@ -39,12 +39,13 @@ export const News: React.FC<NewsPropsType> = memo(function News(props: NewsProps
                                 <Grid container>
                                     <Grid item xs={9} sm={10} md={11}>
                                         <h2 className={style.title} dangerouslySetInnerHTML={{__html: news.title}}/>
+
                                     </Grid>
                                     <Grid item xs={3} sm={2} md={1}>
                                         <p className={style.score}>score: {news.score}</p>
                                     </Grid>
                                 </Grid>
-
+                                {news.deleted && <p className={style.text}>News deleted</p>}
                                 <p className={style.text}>By: {news.by}</p>
                                 {news.time
                                     && <p className={style.text}>

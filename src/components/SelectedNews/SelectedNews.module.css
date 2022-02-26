@@ -1,6 +1,7 @@
 .linkBack {
     text-decoration: none;
     color: inherit;
+    display: inline-block;
 }
 
 .title {
