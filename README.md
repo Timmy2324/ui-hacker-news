@@ -1,6 +1,12 @@
-# Getting Started with Create React App
+# Getting Started with UI-Hacker-News
+
+The project can be viewed here [UI-Hacker-News](https://timmy2324.github.io/ui-hacker-news/#/news).
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## About project
+
+Project UI-Hacker-News was created to display the latest news, the API of which provides [Hacker News](https://github.com/HackerNews/API).
 
 ## Available Scripts
 
@@ -38,6 +44,10 @@ If you aren’t satisfied with the build tool and configuration choices, you can
 Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+
+### `npm run deploy`
+
+Launches the project update launcher on gh-pages
 
 ## Learn More
 
