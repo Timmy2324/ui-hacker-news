@@ -40,7 +40,7 @@ const AllNewsComponent: React.FC<AllNewsComponentPropsType> = memo(function AllN
                 props.setError(error.response.data.error);
                 props.updateNews(false);
             });
-        return () => props.setAllNewsId([]);
+        return () => props.setError('');
     }, [isChange]);
 
     useEffect(() => {
@@ -53,6 +53,7 @@ const AllNewsComponent: React.FC<AllNewsComponentPropsType> = memo(function AllN
 
     return (
         <>
+
             <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <h1 className={style.title}>Hacker News</h1>
@@ -64,6 +65,7 @@ const AllNewsComponent: React.FC<AllNewsComponentPropsType> = memo(function AllN
                     }}>update
                     </Button>
                 </Grid>
+
                 {props.error && <Grid item xs={12}><span className={style.error}>Error: {props.error}</span></Grid>}
                 {props.isUpdateNews && <div className={style.preloaderWrapper}><CircularProgress /></div>}
                 {props.allNewsId.map(newsId => <News key={newsId} newsId={newsId}/>)}
