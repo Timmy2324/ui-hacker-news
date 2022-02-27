@@ -47,8 +47,8 @@ export const SelectedNewsReducer = (state: SelectedNewsPage = initialState, acti
 
 type GenerationType = SetNewsType | SetErrorType | SetCommentsType | SetCommentsCountType | UpdateLoadingNewsType | UpdateLoadingCommentsType;
 
-type SetNewsType = ReturnType<typeof setNews>
-export const setNews = (news: ItemType | null) => {
+type SetNewsType = ReturnType<typeof setNewsAC>
+export const setNewsAC = (news: ItemType | null) => {
     return {
         type: 'SET-NEWS',
         payload: {
@@ -57,8 +57,8 @@ export const setNews = (news: ItemType | null) => {
     } as const
 }
 
-type SetErrorType = ReturnType<typeof setError>
-export const setError = (error: string) => {
+type SetErrorType = ReturnType<typeof setErrorAC>
+export const setErrorAC = (error: string) => {
     return {
         type: 'SET-ERROR',
         payload: {
@@ -67,8 +67,8 @@ export const setError = (error: string) => {
     } as const
 }
 
-type SetCommentsType = ReturnType<typeof setCommentsId>
-export const setCommentsId = (commentsId: Array<number>) => {
+type SetCommentsType = ReturnType<typeof setCommentsIdAC>
+export const setCommentsIdAC = (commentsId: Array<number>) => {
     return {
         type: 'SET-COMMENTS',
         payload: {
@@ -77,8 +77,8 @@ export const setCommentsId = (commentsId: Array<number>) => {
     } as const
 }
 
-type SetCommentsCountType = ReturnType<typeof setCommentsCount>
-export const setCommentsCount = (count: number) => {
+type SetCommentsCountType = ReturnType<typeof setCommentsCountAC>
+export const setCommentsCountAC = (count: number) => {
     return {
         type: 'SET-COMMENTS-COUNT',
         payload: {
@@ -88,8 +88,8 @@ export const setCommentsCount = (count: number) => {
 }
 
 
-type UpdateLoadingNewsType = ReturnType<typeof updateLoadingNews>
-export const updateLoadingNews = (isLoadingNews: boolean) => {
+type UpdateLoadingNewsType = ReturnType<typeof updateLoadingNewsAC>
+export const updateLoadingNewsAC = (isLoadingNews: boolean) => {
     return {
         type: 'UPDATE-LOADING-NEWS',
         payload: {
@@ -98,8 +98,8 @@ export const updateLoadingNews = (isLoadingNews: boolean) => {
     } as const
 }
 
-type UpdateLoadingCommentsType = ReturnType<typeof updateLoadingComments>
-export const updateLoadingComments = (isLoadingComments: boolean) => {
+type UpdateLoadingCommentsType = ReturnType<typeof updateLoadingCommentsAC>
+export const updateLoadingCommentsAC = (isLoadingComments: boolean) => {
     return {
         type: 'UPDATE-LOADING-COMMENTS',
         payload: {

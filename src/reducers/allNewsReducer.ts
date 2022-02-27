@@ -28,8 +28,8 @@ export const AllNewsReducer = (state: AllNewsPageType = initialState, action: Ge
 
 type GenerationType = SetAllNewsIdType |  UpdateNewsType | SetErrorType;
 
-type SetAllNewsIdType = ReturnType<typeof setAllNewsId>;
-export const setAllNewsId = (allNewsId: Array<number>) => {
+type SetAllNewsIdType = ReturnType<typeof setAllNewsIdAC>;
+export const setAllNewsIdAC = (allNewsId: Array<number>) => {
     return {
         type: 'SET-ALL-NEWS-ID',
         payload: {
@@ -38,8 +38,8 @@ export const setAllNewsId = (allNewsId: Array<number>) => {
     } as const
 }
 
-type UpdateNewsType = ReturnType<typeof updateNews>;
-export const updateNews = (isUpdate: boolean) => {
+type UpdateNewsType = ReturnType<typeof updateNewsAC>;
+export const updateNewsAC = (isUpdate: boolean) => {
     return {
         type: 'UPDATE-NEWS',
         payload: {
@@ -48,8 +48,8 @@ export const updateNews = (isUpdate: boolean) => {
     } as const
 }
 
-type SetErrorType = ReturnType<typeof setError>;
-export const setError = (error: string) => {
+type SetErrorType = ReturnType<typeof setErrorAC>;
+export const setErrorAC = (error: string) => {
     return {
         type: 'SET-ERROR',
         payload: {
