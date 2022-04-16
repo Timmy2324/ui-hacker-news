@@ -1,22 +1,26 @@
 import React, {memo, useEffect, useState} from 'react';
-import {getSelectedNews} from "../../../api/hackerNewsApi";
+import {newsAPI} from "../../../api/hackerNewsApi";
 import {NavLink, useRouteMatch} from 'react-router-dom';
 import {ItemType} from "../../../types/ItemType";
 import {Card, CardContent, Grid} from "@mui/material";
 import style from './News.module.css';
+// import {fetchNews} from "../../../app/store/reducers/allNewsReducer";
+import {useDispatch} from "react-redux";
 
 type NewsPropsType = {
     newsId: number,
 }
 
 export const News: React.FC<NewsPropsType> = memo(function News(props: NewsPropsType) {
+    const dispatch = useDispatch();
     const {url} = useRouteMatch();
 
     const [news, setNews] = useState<ItemType | null>();
     const [error, setError] = useState('');
 
     useEffect(() => {
-        getSelectedNews(String(props.newsId)).then(response => {
+        // dispatch(fetchNews(String(props.newsId)));
+        newsAPI.getSelectedNews(String(props.newsId)).then(response => {
             setError('');
             setNews(response.data);
         }).catch(error => {
@@ -59,6 +63,5 @@ export const News: React.FC<NewsPropsType> = memo(function News(props: NewsProps
                 </Card>
             }
         </Grid>
-
     );
 });

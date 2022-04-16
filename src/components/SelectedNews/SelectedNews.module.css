@@ -1,3 +1,11 @@
+.mainTitle {
+    margin: 30px auto 0;
+    font-size: 30px;
+    word-wrap: break-word;
+    max-width: 800px;
+    text-align: center;
+}
+
 .linkBack {
     text-decoration: none;
     color: inherit;
@@ -20,12 +28,6 @@
 
 .linkToNews {
     text-decoration: none;
-}
-
-.preloaderWrapper {
-    display: flex;
-    justify-content: center;
-    width: 100%;
 }
 
 .error {

@@ -1,10 +1,10 @@
 import React from 'react';
 import './App.css';
 import {Redirect, Route, Switch} from "react-router-dom";
-import {SelectedNews} from "./components/SelectedNews/SelectedNews";
-import {ErrorPage} from "./components/ErrorPage/ErrorPage";
+import {SelectedNews} from "../components/SelectedNews/SelectedNews";
+import {ErrorPage} from "../components/ErrorPage/ErrorPage";
 import {Container} from "@mui/material";
-import {AllNews} from "./components/AllNews/AllNews";
+import {AllNews} from "../components/AllNews/AllNews";
 
 function App() {
     return (
