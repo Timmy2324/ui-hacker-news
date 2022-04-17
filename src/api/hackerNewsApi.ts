@@ -1,17 +1,21 @@
 import axios from "axios";
 
-export const baseUrl = 'https://hacker-news.firebaseio.com/v0/';
-export const newsUrl = `${baseUrl}newstories.json`;
-export const selectedNewsUrl = `${baseUrl}item/`;
+const baseUrl = 'https://hacker-news.firebaseio.com/v0/';
+const newsUrl = `newstories.json`;
+const selectedNewsUrl = `item/`;
 
-export const getAllNews = async () => {
-    return await axios.get(newsUrl);
-}
+const instanceNews = axios.create({
+    baseURL: baseUrl,
+})
 
-export const getSelectedNews = async (newsId: string) => {
-    return await axios.get(`${selectedNewsUrl + newsId}.json`);
-}
-
-export const getComment = async (commentId: string) => {
-    return await axios.get(`${selectedNewsUrl + commentId}.json`);
+export const newsAPI = {
+    async getAllNews() {
+        return await instanceNews.get(newsUrl);
+    },
+    async getSelectedNews(newsId: string) {
+        return await instanceNews.get(`${selectedNewsUrl + newsId}.json`);
+    },
+    async getComment(commentId: string) {
+        return await instanceNews.get(`${selectedNewsUrl + commentId}.json`);
+    },
 }

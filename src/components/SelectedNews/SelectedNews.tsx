@@ -1,55 +1,37 @@
 import React, {memo, useEffect, useState} from 'react';
-import {getSelectedNews} from "../../api/hackerNewsApi";
 import {NavLink, useParams} from "react-router-dom";
 import {ItemType} from "../../types/ItemType";
-import {AppStoreType} from "../../store/store";
+import {AppRootStateType} from "../../app/store/store";
 import {useDispatch, useSelector} from "react-redux";
 import {
-    setCommentsCountAC,
-    setCommentsIdAC,
+    fetchComments,
+    fetchNews,
     setErrorAC,
-    setNewsAC, updateLoadingCommentsAC, updateLoadingNewsAC,
-} from "../../reducers/selectedNews";
+    setNewsAC, updateLoadingCommentsAC,
+} from "../../app/store/reducers/selectedNewsReducer";
 import {Comments} from "./Comments/Comments";
-import {Button, Card, CardContent, CircularProgress, Grid, LinearProgress, Link} from "@mui/material";
+import {Button, Card, CardContent, Grid, Link} from "@mui/material";
 import style from './SelectedNews.module.css'
+import {CircleLoader} from "../loader/CircleLoader/CircleLoader";
+import {LineLoader} from "../loader/LineLoader/LineLoader";
 
 
 export const SelectedNews = memo(function SelectedNewsComponent () {
+    const params = useParams<{ newsId: string }>();
     const dispatch = useDispatch();
 
-    const news = useSelector<AppStoreType, ItemType | null>(state => state.SelectedNewsReducer.news);
-    const error = useSelector<AppStoreType, string>(state => state.SelectedNewsReducer.error);
-    const isLoadingNews = useSelector<AppStoreType, boolean>(state => state.SelectedNewsReducer.isLoadingNews);
-    const isLoadingComments = useSelector<AppStoreType, boolean>(state => state.SelectedNewsReducer.isLoadingComments);
+    const news = useSelector<AppRootStateType, ItemType | null>(state => state.SelectedNewsReducer.news);
+    const error = useSelector<AppRootStateType, string | null>(state => state.SelectedNewsReducer.error);
+    const isLoadingNews = useSelector<AppRootStateType, boolean>(state => state.AppReducer.isLoading);
+    const isLoadingComments = useSelector<AppRootStateType, boolean>(state => state.SelectedNewsReducer.isLoadingComments);
 
     const setNews = (news: ItemType | null) => dispatch(setNewsAC(news));
-    const setError = (error: string) => dispatch(setErrorAC(error));
-    const setCommentsId = (commentsId: Array<number>) => dispatch(setCommentsIdAC(commentsId));
-    const setCommentsCount = (count: number) => dispatch(setCommentsCountAC(count));
-    const updateLoadingNews = (isLoadingNews: boolean) => dispatch(updateLoadingNewsAC(isLoadingNews));
+    const setError = (error: string | null) => dispatch(setErrorAC(error));
     const updateLoadingComments = (isLoadingComments: boolean) => dispatch(updateLoadingCommentsAC(isLoadingComments));
 
     const [isChange, setIsChange] = useState(false);
 
-    const params = useParams<{ newsId: string }>();
-
-    useEffect(() => {
-        updateLoadingNews(true);
-        getSelectedNews(params.newsId)
-            .then(response => {
-                setError('');
-                setNews(response.data);
-                updateLoadingNews(false);
-            }).catch(error => {
-                setError(error.response.data.error);
-                updateLoadingNews(false);
-        });
-        return () => {
-            setError('');
-            setNews(null);
-        }
-    }, []);
+    const newsComments = news?.kids && news.kids.map(id => <Comments key={id} id={id}/>)
 
     useEffect(() => {
         if (news?.title) {
@@ -57,21 +39,17 @@ export const SelectedNews = memo(function SelectedNewsComponent () {
         }
     }, [news?.title]);
 
+
     useEffect(() => {
-        updateLoadingComments(true);
-        getSelectedNews(params.newsId)
-            .then(response => {
-                setError('');
-                setCommentsId(response.data.news?.kids);
-                setCommentsCount(response.data.news?.descendants)
-                updateLoadingComments(false);
-            }).catch(error => {
-                setError(error.response?.data.error);
-                updateLoadingComments(false);
-        });
+        dispatch(fetchNews(params.newsId));
         return () => {
-            setError('');
+            setError(null);
+            setNews(null);
         }
+    }, []);
+
+    useEffect(() => {
+        dispatch(fetchComments(params.newsId));
     }, [isChange]);
 
     useEffect(() => {
@@ -84,6 +62,7 @@ export const SelectedNews = memo(function SelectedNewsComponent () {
     return (
         <Grid container spacing={2}>
             <Grid item xs={12}>
+                {news && <h2 className={style.mainTitle} dangerouslySetInnerHTML={{__html: news.title}}/>}
                 <NavLink className={style.linkBack} to={`/news`}>
                     <Button variant="outlined" >
                         back to all news
@@ -91,7 +70,7 @@ export const SelectedNews = memo(function SelectedNewsComponent () {
                 </NavLink>
             </Grid>
             {error && <Grid item xs={12}><span className={style.error}>Error: {error}</span></Grid>}
-            {isLoadingNews && <div className={style.preloaderWrapper}><CircularProgress /></div>}
+            {isLoadingNews && <CircleLoader/>}
             {news
                 && <Grid item xs={12}>
                     <Card variant="outlined">
@@ -105,10 +84,8 @@ export const SelectedNews = memo(function SelectedNewsComponent () {
                                 updateLoadingComments(true);
                                 setIsChange(!isChange);
                             }}>Update comments</Button>
-                            <div style={{height: '4px'}}>
-                                {isLoadingComments && <LinearProgress />}
-                            </div>
-                            {news.kids && news.kids.map(id => <Comments key={id} id={id}/>)}
+                            <LineLoader isLoading={isLoadingComments}/>
+                            {newsComments}
                         </CardContent>
                     </Card>
                 </Grid>

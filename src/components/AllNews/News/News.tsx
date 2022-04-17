@@ -1,6 +1,6 @@
 import React, {memo, useEffect, useState} from 'react';
-import {getSelectedNews} from "../../../api/hackerNewsApi";
-import {NavLink, useRouteMatch} from 'react-router-dom';
+import {newsAPI} from "../../../api/hackerNewsApi";
+import {NavLink} from 'react-router-dom';
 import {ItemType} from "../../../types/ItemType";
 import {Card, CardContent, Grid} from "@mui/material";
 import style from './News.module.css';
@@ -10,13 +10,12 @@ type NewsPropsType = {
 }
 
 export const News: React.FC<NewsPropsType> = memo(function News(props: NewsPropsType) {
-    const {url} = useRouteMatch();
 
     const [news, setNews] = useState<ItemType | null>();
     const [error, setError] = useState('');
 
     useEffect(() => {
-        getSelectedNews(String(props.newsId)).then(response => {
+        newsAPI.getSelectedNews(String(props.newsId)).then(response => {
             setError('');
             setNews(response.data);
         }).catch(error => {
@@ -33,7 +32,7 @@ export const News: React.FC<NewsPropsType> = memo(function News(props: NewsProps
             {error && <span className={style.error}>Error: {error}</span>}
             {news
                 && <Card variant="outlined">
-                    <NavLink className={style.link} to={`${url}/${news.id}`}>
+                    <NavLink className={style.link} to={`/news/${news.id}`}>
                         <CardContent>
                             <div>
                                 <Grid container>
@@ -59,6 +58,5 @@ export const News: React.FC<NewsPropsType> = memo(function News(props: NewsProps
                 </Card>
             }
         </Grid>
-
     );
 });

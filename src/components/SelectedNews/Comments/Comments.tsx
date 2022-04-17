@@ -1,6 +1,6 @@
 import {Button, Grid} from '@mui/material';
 import React, {memo, useEffect, useState} from 'react';
-import {getComment} from "../../../api/hackerNewsApi";
+import {newsAPI} from "../../../api/hackerNewsApi";
 import {ItemType} from "../../../types/ItemType";
 import style from './Comments.module.css';
 import {ExpandLess, ExpandMore} from "@mui/icons-material";
@@ -22,8 +22,7 @@ export const Comments: React.FC<CommentsPropsType> = memo(function(props: Commen
     };
 
     useEffect(() => {
-
-        getComment(String(props.id))
+        newsAPI.getComment(String(props.id))
             .then(response => {
                 setError('');
                 setComment(response.data);
@@ -34,7 +33,6 @@ export const Comments: React.FC<CommentsPropsType> = memo(function(props: Commen
             setComment(undefined)
         }
     }, []);
-
 
     return (
         <Grid style={{marginLeft: (props.marginCount || 0) + 'px'}} item xs={12}>
