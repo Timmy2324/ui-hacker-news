@@ -66,13 +66,3 @@ export const fetchAllNews = () => (dispatch: ThunkDispatchType) => {
         dispatch(setAppLoadingAC(false));
     });
 }
-
-// export const fetchNews = (newsId: string) => (dispatch: ThunkDispatchType) => {
-//     newsAPI.getSelectedNews(newsId)
-//         .then(({data}) => {
-//             dispatch(setErrorAC(null));
-//             dispatch(setAllNewsIdAC(data));
-//         }).catch(error => {
-//         dispatch(setErrorAC(error.message));
-//     });
-// }
